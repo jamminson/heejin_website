@@ -32,11 +32,12 @@ def AddClient(request):
 
     if request.method == "POST":
 
-        form = AddClientForm(request.POST)
+        form = AddClientForm(request.POST, request.FILES)
 
         if form.is_valid():
-            new_client = Client(client_name = form.cleaned_data['client_name'])
-            new_client.save()
+            
+            return HttpResponseRedirect(reverse('index'))
+        
         
     else:
         form = AddClientForm()
