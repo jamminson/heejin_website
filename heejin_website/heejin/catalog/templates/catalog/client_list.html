@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    <h1>Client List</h1>
+
+    <table>
+        <tr>
+            <th>고겍사</th>
+            <th>자재</th>
+            <th>제품</th>
+        </tr>
+    
+        {% for client in client_list %} 
+            <tr>
+                <th>{{client.client_name}}</th>
+                <th>{{ client.get_stringed_client_list }}</th>
+                <th>{{ client.get_stringed_product_list}}</th>
+            </tr>
+
+        {% endfor %}
+
+
+    </table>
+
+{% endblock%}
+

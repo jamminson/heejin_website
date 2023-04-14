@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Plastic Catalog Home</h1>
+  <p>Welcome to Heejin Plastics, a website developed by <em>Camtic</em>!</p>
+  <h2>Dynamic content</h2>
+  <p>The factory catalog has the following record counts:</p>
+  <ul>
+    <li><strong>Resins:</strong> {{ num_resins }}</li>
+    <li><strong>Products:</strong> {{ num_products }}</li>
+    <li><strong>Clients:</strong> {{ num_clients }}</li>
+  </ul>
+{% endblock %}

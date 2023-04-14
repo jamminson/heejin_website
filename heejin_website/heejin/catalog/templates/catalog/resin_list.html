@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Resin Table</h1>
+  {% if resin_list %}
+
+  <table>
+
+    <tr>
+      <th>품명</th>
+      <th>구분</th>
+      <th>고객사</th>
+    </tr>
+    
+    {% for resin in resin_list %}
+      <tr>
+        <th>{{resin.resin_name}}</th>
+        <th>{{resin.material_type}}</th>
+        <th>{{resin.client_name}}</th>
+      </tr>
+  
+    {% endfor %}
+
+  </table>
+
+  {% else %}
+    <p>There are no resins in the library.</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Product List</h1>
+
+    {% if product_list %}
+
+        <table>
+            <tr>
+                <th>고겍사</th>
+                <th>모델</th>
+                <th>품변</th>
+                <th>품명</th>
+                <th>사출톤</th>
+                <th>자재</th>
+                <th>Cavity</th>
+                <th>C/T</th>
+                <th>주간생산량</th>
+                <th>야간생산량</th>
+                <th>실중량</th>
+                <th>중량</th>
+            </tr>
+            
+            {% for product in product_list %}
+                <tr>
+                    <th>{{ product.client_name }}</th>
+                    <th>{{ product.model }}</th>
+                    <th>{{ product.product_code }}</th>
+                    <th>{{ product.product_name }}</th>
+                    <th>{{ product.machine_tonnage }}</th>
+                    <th>{{ product.resin }}</th>
+                    <th>{{ product.cavity }}</th>
+                    <th>{{ product.ct }}</th>
+                    <th>{{ product.day_produce }}</th>
+                    <th>{{ product.night_produce }}</th>
+                    <th>{{ product.real_weight }}</th>
+                    <th>{{ product.weight }}</th>
+                </tr>
+            {% endfor %}
+        </table>
+    
+    {% else %}
+
+        <p>No products found.</p>
+    
+    {% endif %}
+
+{% endblock %}
+
