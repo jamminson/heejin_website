@@ -69,8 +69,5 @@ class Client(models.Model):
 
         return em.join(l)
 
-
-
-    
     def __str__(self):
         return self.client_name
