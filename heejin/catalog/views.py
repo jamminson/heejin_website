@@ -28,7 +28,6 @@ def index(request):
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
 
-
 def AddClient(request):
 
     if request.method == "POST":
@@ -49,7 +48,6 @@ def AddClient(request):
         }
 
     return render(request, 'catalog/add_client.html', context)
-
 
 def AddResin(request):
 

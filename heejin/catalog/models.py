@@ -4,8 +4,8 @@ from django.urls import reverse
 # Create your models here.
 
 class Resin(models.Model):
-    material_type = models.CharField(max_length=10)
-    client_name = models.ForeignKey('Client', on_delete=models.RESTRICT)
+    material_type = models.CharField(max_length=10, blank=True, null=True)
+    client_name = models.ForeignKey('Client', on_delete=models.RESTRICT, blank=True, null=True)
     resin_name = models.CharField(max_length=50, primary_key=True)
 
     def get_absolute_url(self):
@@ -15,21 +15,31 @@ class Resin(models.Model):
     
     def __str__(self):
         return self.resin_name
+    
+    def get_stringed_product_list(self):
+        q_set = self.product_set.all()
+
+        l = []
+        em = ", "
+        for product in q_set:
+            l.append(product.product_name)
+
+        return em.join(l)
 
 
 class Product(models.Model):
-    client_name = models.ForeignKey('Client', on_delete=models.RESTRICT)
-    model = models.CharField(max_length=10)
-    product_code = models.CharField(max_length=50)
+    client_name = models.ForeignKey('Client', on_delete=models.RESTRICT, blank=True, null=True)
+    model = models.CharField(max_length=10, blank=True, null=True)
+    product_code = models.CharField(max_length=50, blank=True, null=True)
     product_name = models.CharField(max_length=50, primary_key=True)
-    machine_tonnage = models.IntegerField()
-    resin = models.ForeignKey('Resin', on_delete=models.RESTRICT)
-    cavity = models.CharField(max_length=10)
-    ct = models.CharField(max_length=20)
-    week_produce = models.CharField(max_length=10)
-    night_produce = models.CharField(max_length=10)
-    real_weight = models.CharField(max_length=10)
-    weight = models.CharField(max_length=10)
+    machine_tonnage = models.CharField(max_length=10, blank=True, null=True)
+    resin = models.ForeignKey('Resin', on_delete=models.RESTRICT, blank=True, null=True)
+    cavity = models.CharField(max_length=10, blank=True, null=True)
+    ct = models.CharField(max_length=20, blank=True, null=True)
+    week_produce = models.CharField(max_length=10, blank=True, null=True)
+    night_produce = models.CharField(max_length=10, blank=True, null=True)
+    real_weight = models.CharField(max_length=10, blank=True, null=True)
+    weight = models.CharField(max_length=10, blank=True, null=True)
 
     def get_absolute_url(self):
 

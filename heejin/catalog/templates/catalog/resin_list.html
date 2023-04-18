@@ -10,6 +10,7 @@
       <th>품명</th>
       <th>구분</th>
       <th>고객사</th>
+      <th>재품</th>
     </tr>
     
     {% for resin in resin_list %}
@@ -17,6 +18,7 @@
         <th>{{resin.resin_name}}</th>
         <th>{{resin.material_type}}</th>
         <th>{{resin.client_name}}</th>
+        <th>{{resin.get_stringed_product_list}}</th>
       </tr>
   
     {% endfor %}
