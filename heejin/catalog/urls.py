@@ -11,6 +11,7 @@ urlpatterns = [
     path('add_client/', views.AddClient, name='add-client'),
     path('add_product/', views.AddProduct, name='add-product'),
     path('add_resin/', views.AddResin, name='add-resin'),
+    path('graph/', views.Graph, name='graph')
 
 
 ]

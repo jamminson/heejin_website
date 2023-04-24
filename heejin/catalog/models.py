@@ -26,7 +26,6 @@ class Resin(models.Model):
 
         return em.join(l)
 
-
 class Product(models.Model):
     client_name = models.ForeignKey('Client', on_delete=models.RESTRICT, blank=True, null=True)
     model = models.CharField(max_length=10, blank=True, null=True)
@@ -81,3 +80,22 @@ class Client(models.Model):
 
     def __str__(self):
         return self.client_name
+
+class Order(models.Model):
+
+    order_date = models.DateField(blank=True, null=True)
+    product = models.ForeignKey('Product', on_delete=models.RESTRICT, blank=True, null=True)
+    vol = models.IntegerField(default=0)
+    notes = models.CharField(max_length=50, blank=True, null=True)
+
+    def get_absolute_url(self):
+
+        """Returns the URL to access a particular instance of MyModelName."""
+        return reverse('product-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return str(self.id)
+    
+    class Meta:
+        ordering = ["order_date"]
+

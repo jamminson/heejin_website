@@ -1,13 +1,13 @@
 import csv
 import re
 from .models import Client, Product, Resin
+from datetime import date, timedelta
 
  
 class engines():
 
     def __init__(self) -> None:
         pass
-
 
     def client_csv_to_input(wrapper_file):
 
@@ -113,8 +113,58 @@ class engines():
             new_resin = Resin(material_type = line_list[i][0], client_name = Client.objects.get(client_name = line_list[i][1]), resin_name=line_list[i][2])
             new_resin.save()
 
+    def order2inventory_dictionary(order_list):
+
+        # Order_list is an iterator of order classes. Orders are ordered from earliest date.
+        # Program outputs dictionary of which keys are ISOFORMAT dates and values are the corresponding inventory sizes.
+
+        start_date = date(2023, 3, 1)
+        end_date = date(2023, 3, 5)
+
+        init_value = 100
+        inventory = {}
+        num_days = (end_date - start_date).days
+
+        for x in range(num_days+1):
+            inventory[(start_date + timedelta(days=x))] = 0
+
+        inventory[start_date] = init_value
+
+        for elm in inventory:
+
+            if len(order_list) > 0:
+
+                if elm == order_list[0].order_date:
+                    # print("here1")
+                    if elm != start_date:
+                        inventory[elm] = inventory[elm - timedelta(days=1)] + order_list[0].vol
+                        order_list.pop(0)
+                    
+                    else:
+                        inventory[elm] = inventory[elm] + order_list[0].vol
+                        order_list.pop(0)
+                
+                else:
+                    # print("here2")
+                    if elm != start_date:
+                        inventory[elm] = inventory[elm - timedelta(days=1)]
+                    
+                    else:
+                        continue
             
-  
+            else:
+                if elm != start_date:
+                            inventory[elm] = inventory[elm - timedelta(days=1)]
+                else:
+                    continue
+        
+        prep_inventory = {}
+        for i in inventory:
+            prep_inventory[i.isoformat()] = inventory[i]
+        
+        return prep_inventory
+            
+
 
 
 

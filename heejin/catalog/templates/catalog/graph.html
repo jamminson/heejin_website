@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Chart.js example</title>
+  </head>
+  <body>
+
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+      
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {{ data_1|json_script:"graph-data"}}
+
+    <script>
+    const ctx = document.getElementById('myChart');
+    const data = JSON.parse(document.getElementById('graph-data').textContent);
+    const cfg = {
+    type: 'line',
+    data: {
+        // labels: ['Jan', 'Feb'],
+        datasets: [{
+        label: '재고',
+        data: data,
+    }]
+    },
+    };
+
+    new Chart(ctx, cfg);
+    </script>
+    
+  </body>
+</html>
+ 

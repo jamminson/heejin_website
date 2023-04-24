@@ -4,7 +4,7 @@ from .engines import engines
 
 # Create your views here.
 
-from .models import Resin, Product, Client
+from .models import Resin, Product, Client, Order
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
@@ -18,11 +18,13 @@ def index(request):
     num_resins = Resin.objects.all().count() 
     num_clients = Client.objects.all().count()
     num_products = Product.objects.all().count()
+    num_orders = Order.objects.all().count()
 
     context = {
         'num_resins': num_resins,
         'num_clients': num_clients,
         'num_products': num_products,
+        'num_orders': num_orders,
     }
 
     # Render the HTML template index.html with the data in the context variable
@@ -93,7 +95,28 @@ def AddProduct(request):
 
         return render(request, 'catalog/add_product.html', context=context)
 
+def Graph(request):
 
+    # Get relavent queryset of order objects. 
+    # Calculate the inventory json file. 
+    # Display the graph. 
+
+
+    objs = list(Order.objects.all().filter(product='X150 FRT W-ARCH-LH'))
+    print(objs)
+
+
+    data = engines.order2inventory_dictionary(objs)
+    print(list(Order.objects.all())[0].product)
+    print(objs)
+    print(data)
+
+
+    context = {
+        'data_1': data
+    }
+
+    return render(request, 'catalog/graph.html', context)
 
 class ResinListView(generic.ListView):
     model = Resin
