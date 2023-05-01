@@ -1,16 +1,15 @@
 from django.shortcuts import render
 from django.views import generic
-from .engines import engines
-
-# Create your views here.
-
-from .models import Resin, Product, Client, Order
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+from .models import Resin, Product, Client, Order
 from catalog.forms import AddClientForm, AddResinForm, AddProductForm
 
-from datetime import date, timedelta
+from datetime import date
+from .helper_data import data_helpers
+from .helper_graph import graph_helpers
+from .helper_inventory import inventory_helpers
+
 
 
 def index(request):
@@ -49,8 +48,14 @@ def AddClient(request):
         form = AddClientForm(request.POST, request.FILES)
 
         if form.is_valid():
+
+            if request.POST['client_names_file'] != '':
+
+                data_helpers.client_csv_to_input(request.FILES['client_names_file'])
+
+            else:
+                data_helpers.add_client(request.POST)
             
-            engines.client_csv_to_input(request.FILES['client_names_file'])
             return HttpResponseRedirect(reverse('clients'))
         
         
@@ -70,7 +75,13 @@ def AddResin(request):
         form = AddResinForm(request.POST, request.FILES)
 
         if form.is_valid():
-            engines.resin_csv_to_input(request.FILES['resin_file'])
+
+            if request.POST['resin_file'] != '':
+                data_helpers.resin_csv_to_input(request.FILES['resin_file'])
+            
+            else:
+                data_helpers.add_resin(request.POST)
+            
             return HttpResponseRedirect(reverse('resins'))
     
     else:
@@ -89,7 +100,13 @@ def AddProduct(request):
         form = AddProductForm(request.POST, request.FILES)
 
         if form.is_valid():
-            engines.product_csv_to_input(request.FILES['product_file'])
+
+            if request.POST['product_file'] != '':
+                data_helpers.product_csv_to_input(request.FILES['product_file'])
+            
+            else:
+                data_helpers.add_product(request.POST)
+                
             return HttpResponseRedirect(reverse('products'))
 
         context = {
@@ -108,26 +125,19 @@ def AddProduct(request):
         return render(request, 'catalog/add_product.html', context=context)
 
 def PrepareGraph(request):
+    # 그래프 준비물 받기위한 뷰
 
     if request.method == "POST":
         
         products = []
 
         for k, v in request.POST.items():
-            
-
             if v=="on":
                 products.append(k)
-        
-        product_string = "+".join(products)
-        date_string = "+".join([request.POST["start_date"], request.POST["end_date"]])
-        date_product_string = date_string + "@&@" + product_string
-        
-        # Need to pass the start and end dates + products into the graph view. 
-        # Combine the dates by + and products by +
-        # 'date_string@&@product_string'
 
-        
+        date_product_string = graph_helpers.date_product_string_encoder(request.POST["start_date"], 
+                                                                 request.POST["end_date"], 
+                                                                 products)
 
         return HttpResponseRedirect(reverse('graph', args=[date_product_string]))
 
@@ -142,51 +152,70 @@ def PrepareGraph(request):
 
 def Graph(request, date_product_string):
 
-    # products: The names of the product to graph.
+    # 그래프 그리는 뷰.
 
-    # Get relavent queryset of order objects. 
-    # Calculate the labels [] for the x axis.
-    # Calculate the datasets [dataset1, ...]. 
-    # Dataset = {label: '', data: []}.
-    # Display the graph. 
+    # output: 
+    # 1. labels = [시작 날짜, date2, date3..., 끝날짜] Chart.js이 필요한 data
+    # 2. datasets = [dataset1, dataset2,...]
+    # dataset = {label: '', data: []}
+    # https://www.chartjs.org/docs/latest/general/data-structures.html
 
-    [date_string, product_string] = date_product_string.split("@&@")
+    #Initialize variables
+    # start_date: 그래프할 첮 날짜
+    # end_date: 그래프할 첮 날짜
+    # product_list: 그래프할 제품 list
+    start_date, end_date, product_l = graph_helpers.date_product_string_decoder(date_product_string)
 
-    datasets = []
     
-    # [product1, product2, ...]
-    product_l = product_string.split("+")
+    # datasets
+    datasets = []
     product_objs = Product.objects.filter(product_name__in=product_l)
-
-    # start_date & end_dates = ISOFORMAT start_date and end_date.
-    [start_date, end_date] = date_string.split("+")
-    start_date = date.fromisoformat(start_date)
-    end_date = date.fromisoformat(end_date)
-
-
     for product_obj in product_objs:
+        order_objs = Order.objects.filter(product__exact=Product.objects.get(product_name=product_obj.product_name), 
+                                          order_date__lte = end_date)
+        order_volume_list = inventory_helpers.order_qlist2order_volume(order_objs)
 
-        # {'ISO': vol, ...}
-        order_objs = Order.objects.filter(product__exact=Product.objects.get(product_name=product_obj.product_name), order_date__lte = end_date)
-        volumes = engines.order2inventory_dictionary(order_objs, start_date, end_date)
+        if len(order_volume_list) > 0:
 
+            # Initialise variables
+            inventory = {}
+            first_order = order_volume_list[0]
+            first_order_date = first_order[0]
+
+            # Setup inventory, order_volume_list
+            inventory = inventory_helpers.setup_inventory_dict(inventory, first_order)
+            order_volume_list.pop(0)
+
+            # Get inventory for product
+            inventory = inventory_helpers.volume_list2inventory_dict(order_volume_list, inventory)
+
+            # Get graph inventory for product
+            graph_inventory = {}
+            graph_inventory = graph_helpers.inventory_dict2graph_inventory_dict(inventory, graph_inventory,
+                                                              start_date, end_date,
+                                                              first_order_date)
+
+        else:
+            # No orders for product
+
+            # Get graph_inventory of 0s.
+            graph_inventory = {}
+            graph_inventory = graph_helpers.empty_inventory_dict2graph_inventory_dict(graph_inventory, start_date, end_date)
+
+
+        # Make dataset, Add dataset to datasets
         dataset = {}
         dataset['label'] = product_obj.product_name
-        dataset['data'] = list(volumes)
-
+        dataset['data'] = list(graph_inventory.values())
         datasets.append(dataset)
-            
+
+       
+    # Get labels
     labels = []
-    print(datasets)
-
-    total_days = (end_date - start_date).days
-
-    for x in range(total_days+1):
-        labels.append(start_date + timedelta(days=x))
+    labels = graph_helpers.get_graph_labels(labels, start_date, end_date)
 
 
     context = {
-        
         "labels": labels,
         "datasets": datasets
     }
@@ -194,54 +223,45 @@ def Graph(request, date_product_string):
     return render(request, 'catalog/graph.html', context)
 
 def Schedule(request):
+    # 스케줄 만드는 뷰
 
     if request.method == "POST":
 
-        engines.schedule_order_input(request.POST)
+        inventory_helpers.save_schedule(request.POST)
         return HttpResponseRedirect(reverse('index'))
         
         
     else:
         obj = list(Product.objects.all())
-        # form = ScheduleForm()
         context = {
-            # "form": form,
+        
             "product_list": obj
         }
         
-
-
     return render(request, "catalog/add_schedule.html", context)
 
 def OrderFill(request, machine_num):
+    # 오더에 생산량 분배량 넣는 뷰 
 
     if request.method == "POST":
-        print(request.POST)
-        engines.order_fill(request.POST)
+        inventory_helpers.order_fill(request.POST)
         return HttpResponseRedirect(reverse('index'))
 
     else:
-        date_today = engines.get_today_date()
 
-        orders = list(Order.objects.all().filter(machine_num=machine_num, order_date=date_today))
-
+        orders = list(Order.objects.all().filter(machine_num=machine_num, order_date=date.today()))
         context = {
             "order_list": orders,
             "machine_num": machine_num,
-
         }
+
     return render(request, "catalog/order_fill.html", context)
 
+# 재고 뷰들
 class ResinListView(generic.ListView):
-    model = Resin
-    
-class ResinDetailView(generic.DetailView):
     model = Resin
 
 class ProductListView(generic.ListView):
-    model = Product
-
-class ProductDetailView(generic.DetailView):
     model = Product
 
 class ClientListView(generic.ListView):

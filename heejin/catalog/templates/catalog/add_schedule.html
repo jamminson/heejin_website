@@ -7,9 +7,9 @@
 
     <form id="schedule" action="" method="post">
         {% csrf_token %}
-        <label for="order_date">Date:</label><br>
+        <label for="order_date">날짜:</label><br>
         <input type="date" name="order_date" id="order_date"><br><br> 
-        <label for="machine_num">Machine Number:</label><br>
+        <label for="machine_num">사출기 번호:</label><br>
         <select name="machine_num" id="machine_num">
             <option value="1">1</option>
             <option value="2">2</option>
@@ -18,6 +18,8 @@
             <option value="5">5</option>
             <option value="6">6</option>
         </select><br><br>
+
+        <p>제품 선택:</p>
 
         {% for product in product_list %}
             <label for="{{product.product_name}}">{{product.product_name}}</label>

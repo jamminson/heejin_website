@@ -17,6 +17,7 @@ class Resin(models.Model):
         return self.resin_name
     
     def get_stringed_product_list(self):
+        # 자재가 들어가는 제품 찾기 
         q_set = self.product_set.all()
 
         l = []
@@ -56,10 +57,8 @@ class Client(models.Model):
         """Returns the URL to access a particular instance of MyModelName."""
         return reverse('model-detail-view', args=[str(self.client_name)])
     
-    def get_stringed_client_list(self):
-
-        """Returns a string of resin names separated by commas."""
-
+    def get_stringed_resin_list(self):
+        # 고겍사가 필요한 자재 보기
         q_set = self.resin_set.all()
 
         l = []
@@ -69,6 +68,7 @@ class Client(models.Model):
         return em.join(l)
     
     def get_stringed_product_list(self):
+        # 고겍사가 필요한 제품 보기
         q_set = self.product_set.all()
 
         l = []

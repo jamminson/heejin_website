@@ -3,8 +3,56 @@
     padding: 30px;
     border: 2px solid powderblue;
     list-style: none;
+    background-color: rgb(255, 255, 255);
   }
   
 body {
-  background-color: powderblue;
+  background-color: beige;
+}
+
+table, th, tr {
+  border: 1px solid;
+}
+
+table {
+  width: 95%;
+  padding-right: 20px;
+}
+
+.product_header {
+  text-align: center;
+  background-color: green;
+  color: white;
+  height: 50px;
+}
+
+.header{
+  text-align: center;
+  background-color: green;
+  color: white;
+  height: 50px;
+  width: 100px;
+}
+
+.resin_row {
+  background-color: white;
+  text-align: center;
+  max-height: 150px;
+  height: 75px;
+}
+
+.resin_material_row {
+  background-color: white;
+  text-align: center;
+  max-height: 150px;
+  height: 75px;
+  width: 75px;
+}
+
+.resin_client_row {
+  background-color: white;
+  text-align: center;
+  max-height: 150px;
+  height: 75px;
+  width: 100px;
 }

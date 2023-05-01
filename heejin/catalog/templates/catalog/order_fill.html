@@ -3,18 +3,24 @@
 {% block content %}
 
     <h1>{{machine_num}}</h1><br>
+
+    {% if order_list %}
     
-    <form id="order_fill" action="" method="post">
-        {% csrf_token %}
-        {% for order in order_list %}
-            <label for="{{order.product}}">{{order.product}}</label>
-            <input type="number" id="{{order.product}}" name="{{order.product}}"><br>
-        
-        {% endfor %}
+        <form id="order_fill" action="" method="post">
+            {% csrf_token %}
+            {% for order in order_list %}
+                <label for="{{order.product}}">{{order.product}}</label>
+                <input type="number" id="{{order.product}}" name="{{order.product}}"><br>
+            
+            {% endfor %}
 
-        <input type="submit" value="Submit">
+            <input type="submit" value="Submit">
 
-    </form>
+        </form>
+    {% else %}
+       <p>오늘 생산 스케줄이 없습니다</p>
+    
+    {% endif %}
 
 
 {% endblock %}

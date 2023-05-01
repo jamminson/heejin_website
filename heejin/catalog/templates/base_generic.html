@@ -16,7 +16,7 @@
      {% block sidebar %}
         <ul class="sidebar-nav">
           <li><a href="{% url 'index' %}">홈</a></li>
-          <li><a href="{% url 'schedule' %}">오늘 제품 선택</a></li>
+          <li><a href="{% url 'schedule' %}">오늘 생산 제품 선택</a></li>
           <li><a href="{% url 'order-fill' machine_num=1 %}">1번</a></li>
           <li><a href="{% url 'order-fill' machine_num=2 %}">2번</a></li>
           <li><a href="{% url 'order-fill' machine_num=3 %}">3번</a></li>
@@ -26,7 +26,11 @@
           <li><a href="{% url 'resins' %}">자재재고</a></li>
           <li><a href="{% url 'products' %}">제품재고</a></li>
           <li><a href="{% url 'clients' %}">고겍사 재고</a></li>
-          <li><a href="{% url 'prepare-graph' %}">그래프 보기</a></li>
+          <li><a href="{% url 'prepare-graph' %}">제품 그래프 보기</a></li>
+          <li><a href="{% url 'add-client' %}">고겍사 추가</a></li>
+          <li><a href="{% url 'add-resin' %}">자재 추가</a></li>
+          <li><a href="{% url 'add-product' %}">제품 추가</a></li>
+
 
           
         </ul>

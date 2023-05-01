@@ -4,11 +4,15 @@
 
     <form action="" method="post">
         {% csrf_token %}
+        <h2>날짜 선택</h2>
 
-        <label for="start_date">Start Date:</label>
+        <label for="start_date">시작 날짜:</label>
         <input type="date" id="start_date" name="start_date"><br>
-        <label for="end_date">End Date:</label>
+        <label for="end_date">끝 날짜:</label>
         <input type="date" id="end_date" name="end_date"><br>
+        
+        <br>
+        <h2>제품 선택:</h2>
 
         {% for product in product_list %}
             <label for="{{product.product_name}}">{{product.product_name}}</label>

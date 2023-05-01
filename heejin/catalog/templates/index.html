@@ -1,11 +1,10 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>플레스틱 캐타로그</h1>
-  <p>희진 플레스텍에 환영합니다!!!</p>
-  <h1>공장현황</h1><br>
+  <h1>희진 플레스틱의 새로운 웹사이트에 환영합니다!!!</h1><br>
+  <h1>공장현황:</h1><br>
 
-  <h2>사출기 1번: </h2><br>
+  <strong>사출기 1번: </strong>
 
   {% if machine_1 %}
 
@@ -20,7 +19,7 @@
   
   {% endif %}
 
-  <h2>사출기 2번: </h2><br>
+  <strong>사출기 2번: </strong>
 
   {% if machine_2 %}
     <ul>
@@ -34,7 +33,7 @@
   
   {% endif %}
 
-  <h2>사출기 3번: </h2><br>
+  <strong>사출기 3번: </strong>
 
   {% if machine_3 %}
     <ul>
@@ -48,7 +47,7 @@
   
   {% endif %}
 
-  <h2>사출기 4번: </h2><br>
+  <strong>사출기 4번: </strong>
   {% if machine_4 %}
 
     <ul>
@@ -62,7 +61,7 @@
   
   {% endif %}
 
-  <h2>사출기 5번: </h2><br>
+  <strong>사출기 5번: </strong>
 
   {% if machine_5 %}
     <ul>
@@ -76,7 +75,7 @@
   
   {% endif %}
 
-  <h2>사출기 6번: </h2><br>
+  <strong>사출기 6번: </strong>
 
   {% if machine_6 %}
     <ul>
@@ -89,20 +88,5 @@
     <p>스케줄 없습니다.</p>
   
   {% endif %}
-
-  
-  
-
- 
-
-  
-
-  <p>공장재고:</p>
-  <ul>
-    <li><strong>자재:</strong> {{ num_resins }}</li>
-    <li><strong>제품:</strong> {{ num_products }}</li>
-    <li><strong>고겍사:</strong> {{ num_clients }}</li>
-    <li><strong>오더:</strong> {{ num_orders }}</li>
-  </ul>
 
 {% endblock %}

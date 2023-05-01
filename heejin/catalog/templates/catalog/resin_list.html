@@ -7,18 +7,18 @@
   <table>
 
     <tr>
-      <th>품명</th>
-      <th>구분</th>
-      <th>고객사</th>
-      <th>재품</th>
+      <th class="header">품명</th>
+      <th class="header">구분</th>
+      <th class="header">고객사</th>
+      <th class="header">재품</th>
     </tr>
     
     {% for resin in resin_list %}
-      <tr>
-        <th>{{resin.resin_name}}</th>
-        <th>{{resin.material_type}}</th>
-        <th>{{resin.client_name}}</th>
-        <th>{{resin.get_stringed_product_list}}</th>
+      <tr >
+        <th class="resin_row">{{resin.resin_name}}</th>
+        <th class="resin_material_row">{{resin.material_type}}</th>
+        <th class="resin_client_row">{{resin.client_name}}</th>
+        <th class="resin_row">{{resin.get_stringed_product_list}}</th>
       </tr>
   
     {% endfor %}

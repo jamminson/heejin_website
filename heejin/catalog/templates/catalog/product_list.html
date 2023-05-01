@@ -7,34 +7,34 @@
 
         <table>
             <tr>
-                <th>고겍사</th>
-                <th>모델</th>
-                <th>품변</th>
-                <th>품명</th>
-                <th>사출톤</th>
-                <th>자재</th>
-                <th>Cavity</th>
-                <th>C/T</th>
-                <th>주간생산량</th>
-                <th>야간생산량</th>
-                <th>실중량</th>
-                <th>중량</th>
+                <th class="product_header">고겍사</th>
+                <th class="product_header">모델</th>
+                <th class="product_header">품변</th>
+                <th class="product_header">품명</th>
+                <th class="product_header">사출톤</th>
+                <th class="product_header">자재</th>
+                <th class="product_header">Cavity</th>
+                <th class="product_header">C/T</th>
+                <!-- <th class="product_header">주간생산량</th> -->
+                <!-- <th class="product_header">야간생산량</th> -->
+                <!-- <th class="product_header">실중량</th> -->
+                <th class="product_header">중량</th>
             </tr>
             
             {% for product in product_list %}
                 <tr>
-                    <th>{{ product.client_name }}</th>
-                    <th>{{ product.model }}</th>
-                    <th>{{ product.product_code }}</th>
-                    <th>{{ product.product_name }}</th>
-                    <th>{{ product.machine_tonnage }}</th>
-                    <th>{{ product.resin }}</th>
-                    <th>{{ product.cavity }}</th>
-                    <th>{{ product.ct }}</th>
-                    <th>{{ product.day_produce }}</th>
-                    <th>{{ product.night_produce }}</th>
-                    <th>{{ product.real_weight }}</th>
-                    <th>{{ product.weight }}</th>
+                    <th class="resin_client_row">{{ product.client_name }}</th>
+                    <th class="resin_client_row">{{ product.model }}</th>
+                    <th class="resin_client_row">{{ product.product_code }}</th>
+                    <th class="resin_client_row">{{ product.product_name }}</th>
+                    <th class="resin_client_row">{{ product.machine_tonnage }}</th>
+                    <th class="resin_client_row">{{ product.resin }}</th>
+                    <th class="resin_client_row">{{ product.cavity }}</th>
+                    <th class="resin_client_row">{{ product.ct }}</th>
+                    <!-- <th>{{ product.day_produce }}</th> -->
+                    <!-- <th>{{ product.night_produce }}</th> -->
+                    <!-- <th>{{ product.real_weight }}</th> -->
+                    <th class="resin_client_row">{{ product.weight }}</th>
                 </tr>
             {% endfor %}
         </table>

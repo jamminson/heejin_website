@@ -6,16 +6,16 @@
 
     <table>
         <tr>
-            <th>고겍사</th>
-            <th>자재</th>
-            <th>제품</th>
+            <th class="header">고겍사</th>
+            <th class="header">자재</th>
+            <th class="header">제품</th>
         </tr>
     
         {% for client in client_list %} 
             <tr>
-                <th>{{client.client_name}}</th>
-                <th>{{ client.get_stringed_client_list }}</th>
-                <th>{{ client.get_stringed_product_list}}</th>
+                <th class="resin_row">{{client.client_name}}</th>
+                <th class="resin_row">{{ client.get_stringed_resin_list }}</th>
+                <th class="resin_row">{{ client.get_stringed_product_list}}</th>
             </tr>
 
         {% endfor %}
