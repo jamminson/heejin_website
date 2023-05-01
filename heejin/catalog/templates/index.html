@@ -1,14 +1,108 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Plastic Catalog Home</h1>
-  <p>Welcome to Heejin Plastics, a website developed by <em>Camtic</em>!</p>
-  <h2>Dynamic content</h2>
-  <p>The factory catalog has the following record counts:</p>
+  <h1>플레스틱 캐타로그</h1>
+  <p>희진 플레스텍에 환영합니다!!!</p>
+  <h1>공장현황</h1><br>
+
+  <h2>사출기 1번: </h2><br>
+
+  {% if machine_1 %}
+
+    <ul>
+      {% for order in machine_1 %}
+      <li><strong>{{order.product}}</strong></li>
+      {% endfor %}
+    </ul>
+  
+  {% else %}
+    <p>스케줄 없습니다.</p>
+  
+  {% endif %}
+
+  <h2>사출기 2번: </h2><br>
+
+  {% if machine_2 %}
+    <ul>
+      {% for order in machine_2 %}
+      <li><strong>{{order.product}}</strong></li>
+      {% endfor %}
+    </ul>
+  
+  {% else %}
+    <p>스케줄 없습니다.</p>
+  
+  {% endif %}
+
+  <h2>사출기 3번: </h2><br>
+
+  {% if machine_3 %}
+    <ul>
+      {% for order in machine_3 %}
+      <li><strong>{{order.product}}</strong></li>
+      {% endfor %}
+    </ul>
+  
+  {% else %}
+    <p>스케줄 없습니다.</p>
+  
+  {% endif %}
+
+  <h2>사출기 4번: </h2><br>
+  {% if machine_4 %}
+
+    <ul>
+      {% for order in machine_4 %}
+      <li><strong>{{order.product}}</strong></li>
+      {% endfor %}
+    </ul>
+  
+  {% else %}
+    <p>스케줄 없습니다.</p>
+  
+  {% endif %}
+
+  <h2>사출기 5번: </h2><br>
+
+  {% if machine_5 %}
+    <ul>
+      {% for order in machine_5 %}
+      <li><strong>{{order.product}}</strong></li>
+      {% endfor %}
+    </ul>
+  
+  {% else %}
+    <p>스케줄 없습니다.</p>
+  
+  {% endif %}
+
+  <h2>사출기 6번: </h2><br>
+
+  {% if machine_6 %}
+    <ul>
+      {% for order in machine_6 %}
+      <li><strong>{{order.product}}</strong></li>
+      {% endfor %}
+    </ul>
+  
+  {% else %}
+    <p>스케줄 없습니다.</p>
+  
+  {% endif %}
+
+  
+  
+
+ 
+
+  
+
+  <p>공장재고:</p>
   <ul>
-    <li><strong>Resins:</strong> {{ num_resins }}</li>
-    <li><strong>Products:</strong> {{ num_products }}</li>
-    <li><strong>Clients:</strong> {{ num_clients }}</li>
-    <li><strong>Orders:</strong> {{ num_orders }}</li>
+    <li><strong>자재:</strong> {{ num_resins }}</li>
+    <li><strong>제품:</strong> {{ num_products }}</li>
+    <li><strong>고겍사:</strong> {{ num_clients }}</li>
+    <li><strong>오더:</strong> {{ num_orders }}</li>
   </ul>
+
 {% endblock %}

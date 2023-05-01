@@ -13,12 +13,22 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-2">
-      {% block sidebar %}
+     {% block sidebar %}
         <ul class="sidebar-nav">
-          <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="{% url 'resins' %}">All Resins</a></li>
-          <li><a href="{% url 'products' %}">All Products</a></li>
-          <li><a href="{% url 'clients' %}">All Clients</a></li>
+          <li><a href="{% url 'index' %}">홈</a></li>
+          <li><a href="{% url 'schedule' %}">오늘 제품 선택</a></li>
+          <li><a href="{% url 'order-fill' machine_num=1 %}">1번</a></li>
+          <li><a href="{% url 'order-fill' machine_num=2 %}">2번</a></li>
+          <li><a href="{% url 'order-fill' machine_num=3 %}">3번</a></li>
+          <li><a href="{% url 'order-fill' machine_num=4 %}">4번</a></li>
+          <li><a href="{% url 'order-fill' machine_num=5 %}">5번</a></li>
+          <li><a href="{% url 'order-fill' machine_num=6 %}">6번</a></li>
+          <li><a href="{% url 'resins' %}">자재재고</a></li>
+          <li><a href="{% url 'products' %}">제품재고</a></li>
+          <li><a href="{% url 'clients' %}">고겍사 재고</a></li>
+          <li><a href="{% url 'prepare-graph' %}">그래프 보기</a></li>
+
+          
         </ul>
      {% endblock %}
 

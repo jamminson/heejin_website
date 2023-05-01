@@ -1,0 +1,10 @@
+.sidebar-nav {
+    margin-top: 50px;
+    padding: 30px;
+    border: 2px solid powderblue;
+    list-style: none;
+  }
+  
+body {
+  background-color: powderblue;
+}

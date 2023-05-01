@@ -33,7 +33,7 @@ class Product(models.Model):
     product_name = models.CharField(max_length=50, primary_key=True)
     machine_tonnage = models.CharField(max_length=10, blank=True, null=True)
     resin = models.ForeignKey('Resin', on_delete=models.RESTRICT, blank=True, null=True)
-    cavity = models.CharField(max_length=10, blank=True, null=True)
+    cavity = models.CharField(max_length=50, blank=True, null=True)
     ct = models.CharField(max_length=20, blank=True, null=True)
     week_produce = models.CharField(max_length=10, blank=True, null=True)
     night_produce = models.CharField(max_length=10, blank=True, null=True)
@@ -84,8 +84,10 @@ class Client(models.Model):
 class Order(models.Model):
 
     order_date = models.DateField(blank=True, null=True)
+    machine_num = models.IntegerField(blank=True, null=True)
     product = models.ForeignKey('Product', on_delete=models.RESTRICT, blank=True, null=True)
-    vol = models.IntegerField(default=0)
+    produced= models.IntegerField(default=0)
+    distributed= models.IntegerField(default=0)
     notes = models.CharField(max_length=50, blank=True, null=True)
 
     def get_absolute_url(self):

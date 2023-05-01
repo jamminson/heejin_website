@@ -1,3 +1,7 @@
-from django.test import TestCase
+# Schedule - User: Manager. Managing page. Select Machine. Select products. 
+# Input page - User: worker. Machine Page -> Product Rows. Input no produced.
 
-# Create your tests here.
+
+
+
+# Graphing monthly files. 

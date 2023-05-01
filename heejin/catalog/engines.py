@@ -1,6 +1,6 @@
 import csv
 import re
-from .models import Client, Product, Resin
+from .models import Client, Product, Resin, Order
 from datetime import date, timedelta
 
  
@@ -113,61 +113,139 @@ class engines():
             new_resin = Resin(material_type = line_list[i][0], client_name = Client.objects.get(client_name = line_list[i][1]), resin_name=line_list[i][2])
             new_resin.save()
 
-    def order2inventory_dictionary(order_list):
+    def clean_order_list(order_list):
+        volume_change = []
+        for order in order_list:
+            changed = False
+            vol = order_list[0].produced - order_list[0].distributed
+
+            for i in range(len(volume_change)):
+                if order.order_date == volume_change[i][0]:
+                    volume_change[i][1] += vol
+                    changed = True
+            
+            if not changed:
+                volume_change.append((order.order_date, vol))
+                
+        
+        print(volume_change)
+            
+
+
+            
+           
+
+
+
+    def order2inventory_dictionary(order_qlist, start_date, end_date):
+
+        #Should output: iterator of dates, iterator of volumes. 
 
         # Order_list is an iterator of order classes. Orders are ordered from earliest date.
         # Program outputs dictionary of which keys are ISOFORMAT dates and values are the corresponding inventory sizes.
+        if len(order_qlist) != 0:
 
-        start_date = date(2023, 3, 1)
-        end_date = date(2023, 3, 5)
+            order_list = list(order_qlist)
+            volume_change = []
+            for order in order_list:
+                vol = order.produced - order.distributed
+                changed = False
 
-        init_value = 100
-        inventory = {}
-        num_days = (end_date - start_date).days
-
-        for x in range(num_days+1):
-            inventory[(start_date + timedelta(days=x))] = 0
-
-        inventory[start_date] = init_value
-
-        for elm in inventory:
-
-            if len(order_list) > 0:
-
-                if elm == order_list[0].order_date:
-                    # print("here1")
-                    if elm != start_date:
-                        inventory[elm] = inventory[elm - timedelta(days=1)] + order_list[0].vol
-                        order_list.pop(0)
-                    
-                    else:
-                        inventory[elm] = inventory[elm] + order_list[0].vol
-                        order_list.pop(0)
+                for i in range(len(volume_change)):
+                    if order.order_date == volume_change[i][0]:
+                        volume_change[i][1] += vol
+                        changed = True
                 
-                else:
-                    # print("here2")
-                    if elm != start_date:
-                        inventory[elm] = inventory[elm - timedelta(days=1)]
-                    
-                    else:
-                        continue
-            
-            else:
-                if elm != start_date:
-                            inventory[elm] = inventory[elm - timedelta(days=1)]
-                else:
-                    continue
+                if not changed:
+                    volume_change.append([order.order_date, vol])
+
         
-        prep_inventory = {}
-        for i in inventory:
-            prep_inventory[i.isoformat()] = inventory[i]
-        
-        return prep_inventory
+
+            inventory = {}
+            first_date = order_list[0].order_date
+            total_days = (date.today() - first_date).days
             
 
+            for x in range(total_days+1):
+                inventory[(first_date + timedelta(days=x))] = 0
+            inventory[first_date] = order_list[0].produced - order_list[0].distributed
+            volume_change.pop(0)
 
 
+            inventory_date_list = list(inventory.keys())
+            for i in range(1, len(inventory_date_list)):
 
+                if len(volume_change) == 0:
+                    inventory[inventory_date_list[i]] = inventory[inventory_date_list[i-1]]
                 
+                else:
+                    
+                    if inventory_date_list[i] == volume_change[0][0]:
+                        print("hi")
+                        inventory[inventory_date_list[i]] = inventory[inventory_date_list[i-1]] + volume_change[0][1]
+                        volume_change.pop(0)
+                    
+                    else:
+                        inventory[inventory_date_list[i]] = inventory[inventory_date_list[i-1]]
+            
+            print(inventory)
+
+
+            graph_inventory = {}
+            graph_total_days = (end_date - start_date).days
+            for x in range(graph_total_days+1):
+
+                if first_date<= (start_date + timedelta(days=x)) <= date.today():
+                    graph_inventory[(start_date + timedelta(days=x)).isoformat()] = inventory[(start_date + timedelta(days=x))]
+                
+                elif (start_date + timedelta(days=x)) < first_date:
+                    graph_inventory[(start_date + timedelta(days=x)).isoformat()] = 0
+                
+                elif (start_date + timedelta(days=x)) > date.today():
+                    graph_inventory[(start_date + timedelta(days=x)).isoformat()] = inventory[date.today()]
+
+
+            
+            
+        
+        else:
+            graph_inventory = {}
+            graph_total_days = (end_date - start_date).days
+            for x in range(graph_total_days+1):
+                graph_inventory[(start_date + timedelta(days=x)).isoformat()] = 0
+        
+        return graph_inventory.values()
+            
+            
+
+
+
+    def schedule_order_input(request_post_dict):
+
+        for k, v in request_post_dict.items():
+            
+        
+            if v == 'on':
+                new_order = Order(order_date=date.fromisoformat(request_post_dict["order_date"]),
+                                  machine_num=int(request_post_dict['machine_num']),
+                                  product=Product.objects.get(product_name=k),
+                                  )
+                new_order.save()
+        
+    def order_fill(request_post_dict):
+
+        for k, v in request_post_dict.items():
+            
+            if k == "csrfmiddlewaretoken":
+                continue
+
+            order = Order.objects.get(product=Product.objects.get(product_name=k))
+            order.produced = int(v)
+            order.save()
+
+
+
+    def get_today_date():
+        return date.today()
 
 

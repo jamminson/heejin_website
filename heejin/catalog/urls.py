@@ -11,7 +11,10 @@ urlpatterns = [
     path('add_client/', views.AddClient, name='add-client'),
     path('add_product/', views.AddProduct, name='add-product'),
     path('add_resin/', views.AddResin, name='add-resin'),
-    path('graph/', views.Graph, name='graph')
+    path('prepare_graph/', views.PrepareGraph, name="prepare-graph"),
+    path('graph/<str:date_product_string>/', views.Graph, name='graph'),
+    path('schedule/', views.Schedule, name='schedule'),
+    path('order_fill/<int:machine_num>/', views.OrderFill, name='order-fill'),
 
 
 ]

@@ -1,0 +1,31 @@
+{% extends "base_generic.html" %} 
+
+{% block content %}
+
+
+<!-- Takes in a list of products -->
+
+    <form id="schedule" action="" method="post">
+        {% csrf_token %}
+        <label for="order_date">Date:</label><br>
+        <input type="date" name="order_date" id="order_date"><br><br> 
+        <label for="machine_num">Machine Number:</label><br>
+        <select name="machine_num" id="machine_num">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+        </select><br><br>
+
+        {% for product in product_list %}
+            <label for="{{product.product_name}}">{{product.product_name}}</label>
+            <input type="checkbox" id="{{product.product_name}}" name="{{product.product_name}}"><br>
+        {% endfor %}
+
+        <input type="submit" value="submit">
+    </form>
+
+
+{% endblock %}

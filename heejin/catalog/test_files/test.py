@@ -90,3 +90,88 @@ for i in inventory:
      prep_inventory[i.isoformat()] = inventory[i]
 
 print(prep_inventory)
+
+#     date_key = inventory_date_list[i]
+        #     prev_date_key = inventory_date_list[i-1]
+        #     done = False
+        #     # print(date_key)
+        #     # print(order_list[0].order_date)
+
+        #     if not done:
+    
+        #         while date_key == order_list[0].order_date:
+        #             print("here {} {}".format(date_key, order_list[0].order_date))
+
+        #             inventory[date_key] = inventory[prev_date_key] + (order_list[0].produced - order_list[0].distributed)
+        #             print(inventory.values())
+        #             order_list.pop(0)
+        #             if len(order_list) == 0:
+        #                 done = True
+        #                 break
+                
+                    
+                    
+        #     inventory[date_key] = inventory[prev_date_key]
+
+        
+        # i = 1
+        # done = False
+        # edited = False
+
+        # while i < len(inventory_date_list):
+
+        #     while not done:
+        #         date_key = inventory_date_list[i]
+        #         prev_date_key = inventory_date_list[i-1]
+        #         while date_key == order_list[0].order_date:
+        #             inventory[date_key] = inventory[prev_date_key] + (order_list[0].produced - order_list[0].distributed)
+        #             edited = True
+        #             order_list.pop(0)
+
+        #             if len(order_list) == 0:
+        #                 done = True
+        #                 break
+                
+        #         if edited is not True:
+        #             inventory[date_key] = inventory[prev_date_key]
+        #             edited = False
+                
+        #         i += 1
+            
+        #     date_key = inventory_date_list[i]
+        #     prev_date_key = inventory_date_list[i-1]
+        #     i += 1
+            
+
+                
+
+
+
+
+        # for elm in inventory:
+
+        #     if len(order_list) > 0:
+
+        #         if elm == order_list[0].order_date:
+        #             # print("here1")
+        #             if elm != start_date:
+        #                 inventory[elm] = inventory[elm - timedelta(days=1)] + (order_list[0].produced - order_list[0].distributed)
+        #                 order_list.pop(0)
+                    
+        #             else:
+        #                 inventory[elm] = inventory[elm] + (order_list[0].produced - order_list[0].distributed)
+        #                 order_list.pop(0)
+                
+        #         else:
+        #             # print("here2")
+        #             if elm != start_date:
+        #                 inventory[elm] = inventory[elm - timedelta(days=1)]
+                    
+        #             else:
+        #                 continue
+            
+        #     else:
+        #         if elm != start_date:
+        #                     inventory[elm] = inventory[elm - timedelta(days=1)]
+        #         else:
+        #             continue
